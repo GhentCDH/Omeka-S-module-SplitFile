@@ -17,15 +17,14 @@ class Pdf extends AbstractSplitter
 
     public function split($filePath, $targetDir)
     {
-        $commandPath = $this->cli->getCommandPath('pdfseparate');
         $uniqueId = uniqid();
         $pagePattern = sprintf('%s/%s-%%d.pdf', $targetDir, $uniqueId);
         $commandArgs = [
-            $commandPath,
+            $this->getCommandPath('pdfseparate'),
             escapeshellarg($filePath),
             escapeshellarg($pagePattern),
         ];
-        $this->cli->execute(implode(' ', $commandArgs));
+        $this->execute(implode(' ', $commandArgs));
         $filePaths = glob(sprintf('%s/%s-*.pdf', $targetDir, $uniqueId));
         natsort($filePaths);
         return $filePaths;

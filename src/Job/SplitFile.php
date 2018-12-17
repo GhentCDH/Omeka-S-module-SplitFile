@@ -23,6 +23,10 @@ class SplitFile extends AbstractJob
             ->get($this->getArg('splitter'));
         $filePath = $store->getLocalPath(sprintf('original/%s', $media->getFilename()));
         $filePaths = $splitter->split($filePath, $config['temp_dir']);
+        if (!is_array($filePaths)) {
+            $message = sprintf('Unexpected return value from split: %s', gettype($filePaths));
+            throw new \RuntimeException($message);
+        }
         $filePaths = array_values($filePaths); // ensure sequential indexes
 
         // Build the media data, starting with existing media.
