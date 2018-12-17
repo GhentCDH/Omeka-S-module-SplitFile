@@ -21,9 +21,29 @@ abstract class AbstractSplitter implements SplitterInterface
     public function getPdfPageCount($filePath)
     {
         $commandPath = $this->cli->getCommandPath('pdfinfo');
-        $commandArgs = [$commandPath, $filePath];
-        $info = $this->cli->execute(implode(' ', $commandArgs));
-        preg_match('/\nPages:\s+(\d+)\n/', $info, $matches);
+        $commandArgs = [
+            $commandPath,
+            escapeshellarg($filePath),
+        ];
+        $output = $this->cli->execute(implode(' ', $commandArgs));
+        preg_match('/\nPages:\s+(\d+)\n/', $output, $matches);
         return (int) $matches[1];
+    }
+    /**
+     * Get the TIFF page count.
+     *
+     * @param string $filePath
+     * @return int
+     */
+    public function getTiffPageCount($filePath)
+    {
+        $commandPath = $this->cli->getCommandPath('identify');
+        $commandArgs = [
+            $commandPath,
+            escapeshellarg($filePath),
+        ];
+        $output = $this->cli->execute(implode(' ', $commandArgs));
+        $pages = count(explode("\n", $output));
+        return (int) $pages;
     }
 }
