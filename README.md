@@ -16,9 +16,9 @@ a part of the poppler-utils package.
 
 ### pdf
 
-Used to split PDF files into component PDF pages. Requires [pdfseparate](https://www.mankier.com/1/pdfseparate),
-a part of the poppler-utils package, and [pdfinfo](https://linux.die.net/man/1/pdfinfo),
-a part of the poppler-utils package.
+Used to split PDF files into component PDF pages. Requires [pdfseparate](https://www.mankier.com/1/pdfseparate)
+and [pdfinfo](https://linux.die.net/man/1/pdfinfo), parts of the poppler-utils
+package.
 
 ## TIFF Splitters:
 
