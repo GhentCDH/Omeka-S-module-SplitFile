@@ -1,21 +1,22 @@
 <?php
 namespace SplitFile\Splitter\Pdf;
 
-use SplitFile\Splitter\AbstractSplitter;
+use SplitFile\Splitter\AbstractPdfSplitter;
 
 /**
  * Use pdfseparate to split PDF files into component PDF pages.
  *
  * @see https://www.mankier.com/1/pdfseparate
  */
-class Pdf extends AbstractSplitter
+class Pdf extends AbstractPdfSplitter
 {
     public function isAvailable()
     {
-        return (bool) $this->cli->getCommandPath('pdfseparate');
+        return ((bool) $this->cli->getCommandPath('pdfinfo')
+            && (bool) $this->cli->getCommandPath('pdfseparate'));
     }
 
-    public function split($filePath, $targetDir)
+    public function split($filePath, $targetDir, $pageCount)
     {
         $uniqueId = uniqid();
         $pagePattern = sprintf('%s/%s-%%d.pdf', $targetDir, $uniqueId);

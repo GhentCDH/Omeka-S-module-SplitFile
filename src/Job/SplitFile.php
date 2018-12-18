@@ -22,9 +22,21 @@ class SplitFile extends AbstractJob
             ->get($media->getMediaType())
             ->get($this->getArg('splitter'));
         $filePath = $store->getLocalPath(sprintf('original/%s', $media->getFilename()));
-        $filePaths = $splitter->split($filePath, $config['temp_dir']);
+        $pageCount = $splitter->getPageCount($filePath);
+        $filePaths = $splitter->split($filePath, $config['temp_dir'], $pageCount);
         if (!is_array($filePaths)) {
-            $message = sprintf('Unexpected return value from split: %s', gettype($filePaths));
+            $message = sprintf(
+                'Unexpected split() return value. Expected array got %s',
+                gettype($filePaths)
+            );
+            throw new \RuntimeException($message);
+        }
+        if ($pageCount !== count($filePaths)) {
+            $message = sprintf(
+                'The file page count (%s) does not match the count returned by split() (%s).',
+                $pageCount,
+                count($filePaths)
+            );
             throw new \RuntimeException($message);
         }
         $filePaths = array_values($filePaths); // ensure sequential indexes

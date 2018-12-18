@@ -14,15 +14,22 @@ interface SplitterInterface
     public function isAvailable();
 
     /**
+     * Get the page count.
+     *
+     * @param string $filePath
+     * @return int
+     */
+    public function getPageCount($filePath);
+
+    /**
      * Split a file into its component pages.
      *
-     * If the split was successful, this returns an array containing the split
-     * file paths, in original order. If the split fails for any reason, this
-     * should return false.
+     * Returns an array containing the split file paths, in original order.
      *
      * @param string $filePath The path to the file
-     * @param srtring $targetDir The path of the dir to process files
-     * @return array|false
+     * @param string $targetDir The path of the dir to process files
+     * @param int $pageCount The file page count
+     * @return array
      */
-    public function split($filePath, $targetDir);
+    public function split($filePath, $targetDir, $pageCount);
 }
