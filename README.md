@@ -12,13 +12,18 @@ using other tools and added to Omeka separately.
 
 Used to split PDF files into component JPG pages. Requires [convert](https://linux.die.net/man/1/convert),
 a part of the ImageMagick suite of tools, and [pdfinfo](https://linux.die.net/man/1/pdfinfo),
-a part of the poppler-utils package.
+a part of the poppler-utils package. If the [Extract Text](https://github.com/omeka-s-modules/ExtractText)
+module is installed and active, this module will extract the page text from the
+original PDF file and set it to the the component JPG pages.
 
 ### pdf
 
 Used to split PDF files into component PDF pages. Requires [pdfseparate](https://www.mankier.com/1/pdfseparate)
 and [pdfinfo](https://linux.die.net/man/1/pdfinfo), parts of the poppler-utils
-package.
+package. If the [Extract Text](https://github.com/omeka-s-modules/ExtractText)
+module is installed and active, it will automatically extract the page text from
+the original PDF file and set it to the the component PDF pages.
+
 
 ## TIFF Splitters:
 

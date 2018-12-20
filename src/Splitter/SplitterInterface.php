@@ -36,11 +36,16 @@ interface SplitterInterface
     /**
      * Filter media data before updating parent item.
      *
+     * Used by splitter instances to filter the media data of an individual file
+     * page. For example, the splitter could add page-specific metadata to the
+     * newly created media.
+     *
      * @param array $mediaData
-     * @param string $filePath
-     * @param int $pageCount The page count of the original file
-     * @param string $splitFilePath
+     * @param string $filePath The path to the original file
+     * @param int $pageCount The original file page count
+     * @param string $splitFilePath The path to the split file page
      * @param int $page The page of the split file
+     * @return array The filtered media data
      */
     public function filterMediaData(array $mediaData, $filePath, $pageCount,
         $splitFilePath, $page
