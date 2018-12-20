@@ -23,23 +23,23 @@ class SplitFile extends AbstractJob
             ->get($this->getArg('splitter'));
         $filePath = $store->getLocalPath(sprintf('original/%s', $media->getFilename()));
         $pageCount = $splitter->getPageCount($filePath);
-        $filePaths = $splitter->split($filePath, $config['temp_dir'], $pageCount);
-        if (!is_array($filePaths)) {
+        $splitFilePaths = $splitter->split($filePath, $config['temp_dir'], $pageCount);
+        if (!is_array($splitFilePaths)) {
             $message = sprintf(
                 'Unexpected split() return value. Expected array got %s',
-                gettype($filePaths)
+                gettype($splitFilePaths)
             );
             throw new \RuntimeException($message);
         }
-        if ($pageCount !== count($filePaths)) {
+        if ($pageCount !== count($splitFilePaths)) {
             $message = sprintf(
                 'The file page count (%s) does not match the count returned by split() (%s).',
                 $pageCount,
-                count($filePaths)
+                count($splitFilePaths)
             );
             throw new \RuntimeException($message);
         }
-        $filePaths = array_values($filePaths); // ensure sequential indexes
+        $splitFilePaths = array_values($splitFilePaths); // ensure sequential indexes
 
         // Build the media data, starting with existing media.
         $mediaData = [];
@@ -47,13 +47,16 @@ class SplitFile extends AbstractJob
             $mediaData[] = ['o:id' => $itemMediaId];
         }
         $page = 1;
-        foreach ($filePaths as $filePath) {
-            $mediaData[] = [
+        foreach ($splitFilePaths as $splitFilePath) {
+            $thisMediaData = [
                 'o:source' => sprintf('%s-%s', $media->getSource(), $page),
                 'o:is_public' => $media->isPublic(),
                 'o:ingester' => 'splitfilesideload',
-                'ingest_filename' => basename($filePath),
+                'ingest_filename' => basename($splitFilePath),
             ];
+            $mediaData[] = $splitter->filterMediaData(
+                $thisMediaData, $filePath, $pageCount, $splitFilePath, $page
+            );
             $page++;
         }
 

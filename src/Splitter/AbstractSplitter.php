@@ -12,6 +12,12 @@ abstract class AbstractSplitter implements SplitterInterface
         $this->cli = $cli;
     }
 
+    public function filterMediaData(array $mediaData, $filePath, $pageCount,
+        $splitFilePath, $page
+    ) {
+        return $mediaData;
+    }
+
     /**
      * Get a command path.
      *

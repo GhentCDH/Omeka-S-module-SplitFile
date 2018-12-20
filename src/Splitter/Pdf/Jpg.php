@@ -1,6 +1,8 @@
 <?php
 namespace SplitFile\Splitter\Pdf;
 
+use ExtractText\Module;
+use ExtractText\Extractor\Pdftotext;
 use SplitFile\Splitter\AbstractPdfSplitter;
 
 /**
@@ -10,6 +12,8 @@ use SplitFile\Splitter\AbstractPdfSplitter;
  */
 class Jpg extends AbstractPdfSplitter
 {
+    protected $extractTextModule;
+
     public function isAvailable()
     {
         return ((bool) $this->cli->getCommandPath('pdfinfo')
@@ -24,5 +28,37 @@ class Jpg extends AbstractPdfSplitter
             $pageCount,
             ['from_pdf' => true]
         );
+    }
+    public function filterMediaData(array $mediaData, $filePath, $pageCount,
+        $splitFilePath, $page
+    ) {
+        if (!$this->extractTextModule) {
+            // The ExtractText module is not installed or active.
+            return parent::filterMediaData($mediaData, $filePath, $pageCount, $splitFilePath, $page);
+        }
+        $textProperty = $this->extractTextModule->getTextProperty();
+        if (false === $textProperty) {
+            // The text property does not exist.
+            return parent::filterMediaData($mediaData, $filePath, $pageCount, $splitFilePath, $page);
+        }
+        $extractor = new Pdftotext($this->cli);
+        $text = $extractor->extract($filePath, ['f' => $page, 'l' => $page]);
+        if (false === $text) {
+            // Could not extract text from the page.
+            return parent::filterMediaData($mediaData, $filePath, $pageCount, $splitFilePath, $page);
+        }
+        $mediaData['extracttext:extracted_text'] = [
+            [
+                'type' => 'literal',
+                '@value' => $text,
+                'property_id' => $textProperty->getId(),
+            ]
+        ];
+        return $mediaData;
+    }
+
+    public function setExtractTextModule(Module $extractTextModule = null)
+    {
+        $this->extractTextModule = $extractTextModule;
     }
 }

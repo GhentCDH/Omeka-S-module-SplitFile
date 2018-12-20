@@ -32,4 +32,17 @@ interface SplitterInterface
      * @return array
      */
     public function split($filePath, $targetDir, $pageCount);
+
+    /**
+     * Filter media data before updating parent item.
+     *
+     * @param array $mediaData
+     * @param string $filePath
+     * @param int $pageCount The page count of the original file
+     * @param string $splitFilePath
+     * @param int $page The page of the split file
+     */
+    public function filterMediaData(array $mediaData, $filePath, $pageCount,
+        $splitFilePath, $page
+    );
 }
