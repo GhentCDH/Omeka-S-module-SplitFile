@@ -1,10 +1,13 @@
 # Split File
 
-Split files into their component pages.
+Split multipage files into their component pages.
+
+For example, if have an item containing one ten-page file, you can use this
+module to split it into ten one-page files assigned to the same item.
 
 This module is not optimized to split very large multipage files. It was tested
-on and should only be used for files under 90 MB. Larger files should be split
-using other tools and added to Omeka separately.
+on and should be used for files under 90 MB. Larger files should be split using
+other tools and added to Omeka separately.
 
 ## PDF Splitters:
 
