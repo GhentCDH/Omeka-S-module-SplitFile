@@ -2,7 +2,7 @@
 namespace SplitFile\Service\Splitter\Pdf;
 
 use SplitFile\Splitter\Pdf\Pdf;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class PdfFactory implements FactoryInterface

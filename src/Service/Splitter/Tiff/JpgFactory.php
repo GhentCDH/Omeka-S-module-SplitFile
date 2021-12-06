@@ -2,7 +2,7 @@
 namespace SplitFile\Service\Splitter\Tiff;
 
 use SplitFile\Splitter\Tiff\Jpg;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class JpgFactory implements FactoryInterface

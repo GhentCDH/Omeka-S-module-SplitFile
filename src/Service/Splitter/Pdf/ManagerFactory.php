@@ -3,7 +3,7 @@ namespace SplitFile\Service\Splitter\Pdf;
 
 use SplitFile\Splitter\Pdf\Manager;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ManagerFactory implements FactoryInterface
 {

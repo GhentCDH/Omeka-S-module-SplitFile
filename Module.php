@@ -1,19 +1,24 @@
 <?php
 namespace SplitFile;
 
-use Omeka\Api\Representation\MediaRepresentation;
+if (!class_exists(\Generic\AbstractModule::class)) {
+    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
+        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
+        : __DIR__ . '/src/Generic/AbstractModule.php';
+}
+
 use Omeka\File\Store\Local;
-use Omeka\Module\AbstractModule;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Generic\AbstractModule;
+
 
 class Module extends AbstractModule
 {
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
+    const NAMESPACE = __NAMESPACE__;
+
+    protected $dependency = "FileSideload";
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {

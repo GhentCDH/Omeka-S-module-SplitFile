@@ -3,7 +3,7 @@ namespace SplitFile\Service\Media\Ingester;
 
 use Interop\Container\ContainerInterface;
 use FileSideload\Media\Ingester\Sideload;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Construct the "splitfilesideload" media ingester.

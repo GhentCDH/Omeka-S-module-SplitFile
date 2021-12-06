@@ -2,7 +2,7 @@
 namespace SplitFile\Service\Splitter\Pdf;
 
 use SplitFile\Splitter\Pdf\Jpg;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 
 class JpgFactory implements FactoryInterface

@@ -3,7 +3,7 @@ namespace SplitFile\Service\Splitter;
 
 use SplitFile\Splitter\Manager;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ManagerFactory implements FactoryInterface
 {
