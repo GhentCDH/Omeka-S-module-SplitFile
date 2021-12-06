@@ -27,7 +27,8 @@ class AbstractFactory implements AbstractFactoryInterface
         return new Sideload(
             $directory,
             is_writable($directory),
-            $services->get('Omeka\File\TempFileFactory')
+            $services->get('Omeka\File\TempFileFactory'),
+            $services->get('Omeka\File\Validator')
         );
     }
 }
