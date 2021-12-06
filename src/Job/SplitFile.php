@@ -41,6 +41,13 @@ class SplitFile extends AbstractJob
         }
         $splitFilePaths = array_values($splitFilePaths); // ensure sequential indexes
 
+        // Make sure database connection is alive after processing data
+        /** @var \Doctrine\DBAL\Connection $conn */
+        $conn = $services->get('Omeka\Connection');
+        if ( !$conn->isConnected() || !$conn->executeQuery('Select 1;') ) {
+            $conn->connect();
+        }
+
         // Build the media data, starting with existing media.
         $mediaData = [];
         foreach ($item->getMedia()->getKeys() as $itemMediaId) {
@@ -60,7 +67,7 @@ class SplitFile extends AbstractJob
             $page++;
         }
 
-        // Update the item.
-        $api->update('items', $item->getId(), ['o:media' => $mediaData]);
+        // Update the item
+        $api->update('items', $item->getId(), ['o:media' => $mediaData], [], [ 'isPartial' => true ]);
     }
 }
