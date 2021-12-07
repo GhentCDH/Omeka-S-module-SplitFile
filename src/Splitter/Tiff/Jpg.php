@@ -10,6 +10,7 @@ use SplitFile\Splitter\AbstractTiffSplitter;
  */
 class Jpg extends AbstractTiffSplitter
 {
+
     public function isAvailable()
     {
         return ((bool) $this->cli->getCommandPath('identify')

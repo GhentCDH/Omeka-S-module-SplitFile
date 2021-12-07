@@ -3,6 +3,7 @@ namespace SplitFile\Splitter\Pdf;
 
 use ExtractText\Module;
 use ExtractText\Extractor\Pdftotext;
+use Omeka\Stdlib\Cli;
 use SplitFile\Splitter\AbstractPdfSplitter;
 
 /**
@@ -13,7 +14,7 @@ use SplitFile\Splitter\AbstractPdfSplitter;
 class Jpg extends AbstractPdfSplitter
 {
     protected $extractTextModule;
-
+    
     public function isAvailable()
     {
         return ((bool) $this->cli->getCommandPath('pdfinfo')

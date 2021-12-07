@@ -1,15 +1,21 @@
 <?php
 namespace SplitFile\Splitter;
 
+use Laminas\Log\Logger;
+use Omeka\Settings\Settings;
 use Omeka\Stdlib\Cli;
 
 abstract class AbstractSplitter implements SplitterInterface
 {
     protected $cli;
+    protected $settings;
+    protected $logger;
 
-    public function __construct(Cli $cli)
+    public function __construct(Cli $cli, Settings $settings, Logger $logger)
     {
         $this->cli = $cli;
+        $this->settings = $settings;
+        $this->logger = $logger;
     }
 
     public function filterMediaData(array $mediaData, $filePath, $pageCount,
@@ -83,7 +89,7 @@ abstract class AbstractSplitter implements SplitterInterface
             $filePathWithRange = sprintf('%s[%s]', $filePath, $range);
             $args = [$this->getCommandPath('convert')];
             if (isset($options['from_pdf']) && $options['from_pdf']) {
-                $args[] = '-density 150';
+                $args[] = '-density ' . ($this->settings->get('splitfile_jpeg_density') ?? '150');
             }
             $args[] = escapeshellarg($filePathWithRange);
             $args[] = '-auto-orient';
