@@ -35,3 +35,9 @@ Used to split TIFF files into component JPG pages. Requires [convert](https://li
 and [identify](https://linux.die.net/man/1/identify), parts of the ImageMagick
 suite of tools.
 
+## ImageMagick options
+
+Add read/write policy to /etc/ImageMagick-6/policy.xml
+
+```
+<policy domain="coder" rights="read | write" pattern="PDF" />
