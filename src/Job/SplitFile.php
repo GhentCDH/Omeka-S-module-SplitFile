@@ -1,20 +1,29 @@
 <?php
 namespace SplitFile\Job;
 
+use Doctrine\ORM\EntityManager;
+use Omeka\Api\Manager;
+use Omeka\Entity\Item;
+use Omeka\Entity\Media;
 use Omeka\Job\AbstractJob;
-use Omeka\Job\Exception\RuntimeException;
+use Omeka\Api\Adapter\Manager as AdapterManager;
 
 class SplitFile extends AbstractJob
 {
     public function perform()
     {
         $services = $this->getServiceLocator();
+        /** @var Manager $api */
         $api = $services->get('Omeka\ApiManager');
+        /** @var EntityManager $em */
         $em = $services->get('Omeka\EntityManager');
+
         $store = $services->get('Omeka\File\Store');
         $config = $services->get('Config');
 
+        /** @var Media $media */
         $media = $em->find('Omeka\Entity\Media', $this->getArg('media_id'));
+        /** @var Item $item */
         $item = $media->getItem();
 
         // Split the file.
@@ -49,6 +58,8 @@ class SplitFile extends AbstractJob
         }
 
         // Build the media data, starting with existing media.
+        $itemData = $item->getValues()->toArray();
+
         $mediaData = [];
         foreach ($item->getMedia()->getKeys() as $itemMediaId) {
             $mediaData[] = ['o:id' => $itemMediaId];
@@ -67,7 +78,26 @@ class SplitFile extends AbstractJob
             $page++;
         }
 
+        $itemData['o:media'] = $mediaData;
+
         // Update the item
-        $api->update('items', $item->getId(), ['o:media' => $mediaData], [], [ 'isPartial' => true ]);
+        // problem: ImageServer Tile Builder does not run on partial updates
+        // fix: do partial update, disable post events, modify original request and trigger events manually
+
+        $response = $api->update(
+            'items',
+            $item->getId(),
+            ['o:media' => $mediaData],
+            [],
+            [ 'isPartial' => true, 'finalize' => false]
+        );
+
+        /** @var AdapterManager $adapterManager */
+        $adapterManager = $services->get('Omeka\ApiAdapterManager');
+        $api->finalize(
+            $adapterManager->get('items'),
+            $response->getRequest()->setOption('isPartial', false),
+            $response
+        );
     }
 }
